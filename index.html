@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>3D Interactive Joke Quiz Game</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        overflow: hidden;
+      }
+      a-scene {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <a-scene>
+      <!-- Assets -->
+      <a-assets>
+        <img
+          id="skyTexture"
+          src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg"
+        />
+        <img
+          id="groundTexture"
+          src="https://cdn.aframe.io/a-painter/images/floor.jpg"
+        />
+      </a-assets>
+
+      <!-- Environment -->
+      <a-sky src="#skyTexture"></a-sky>
+      <a-plane
+        position="0 0 0"
+        rotation="-90 0 0"
+        width="50"
+        height="50"
+        src="#groundTexture"
+      ></a-plane>
+
+      <!-- Question and Option Entities -->
+      <a-entity id="question" position="0 3 -4">
+        <a-plane color="#FFFFFF" width="5" height="1.5"></a-plane>
+        <a-text
+          value="What do you call a fake noodle?"
+          color="#000000"
+          align="center"
+          width="4.5"
+        ></a-text>
+      </a-entity>
+      <a-entity id="option1" position="-2 1 -4">
+        <a-box color="#4CC3D9" depth="1" height="1" width="3"></a-box>
+        <a-text
+          value="An Impasta!"
+          color="#FFFFFF"
+          align="center"
+          width="2.5"
+          position="0 0.25 0.51"
+        ></a-text>
+      </a-entity>
+      <a-entity id="option2" position="2 1 -4">
+        <a-box color="#EF2D5E" depth="1" height="1" width="3"></a-box>
+        <a-text
+          value="A Carrot!"
+          color="#FFFFFF"
+          align="center"
+          width="2.5"
+          position="0 0.25 0.51"
+        ></a-text>
+      </a-entity>
+
+      <!-- Camera and Cursor -->
+      <a-camera position="0 1.6 5">
+        <a-cursor></a-cursor>
+      </a-camera>
+    </a-scene>
+
+    <script>
+      const questions = [
+        {
+          question: "What do you call a fake noodle?",
+          options: ["An Impasta!", "A Carrot!"],
+          correct: 0,
+        },
+        {
+          question: "What's orange and sounds like a parrot?",
+          options: ["A Banana!", "A Carrot!"],
+          correct: 1,
+        },
+        {
+          question: "Why did the tomato turn red?",
+          options: [
+            "Because it saw the salad dressing!",
+            "Because it was ripe!",
+          ],
+          correct: 0,
+        },
+      ];
+
+      let currentQuestionIndex = 0;
+
+      function setupQuestion() {
+        const question = questions[currentQuestionIndex];
+        document
+          .querySelector("#question")
+          .children[1].setAttribute("value", question.question);
+        document
+          .querySelector("#option1")
+          .children[1].setAttribute("value", question.options[0]);
+        document
+          .querySelector("#option2")
+          .children[1].setAttribute("value", question.options[1]);
+      }
+
+      document.querySelector("#option1").addEventListener("click", function () {
+        if (questions[currentQuestionIndex].correct === 0) {
+          alert("Correct answer!");
+        } else {
+          alert("Wrong answer. Try again!");
+        }
+        currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+        setupQuestion();
+      });
+
+      document.querySelector("#option2").addEventListener("click", function () {
+        if (questions[currentQuestionIndex].correct === 1) {
+          alert("Correct answer!");
+        } else {
+          alert("Wrong answer. Try again!");
+        }
+        currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+        setupQuestion();
+      });
+
+      setupQuestion(); // Initialize the first question
+    </script>
+  </body>
+</html>
